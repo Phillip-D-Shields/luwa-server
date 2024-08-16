@@ -1,0 +1,25 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+
+{{ if .User}}
+<div class="ph3 ph4-ns pv6 bt b--black-10 black-70">
+  <h2 class="link b f3 f2-ns dim black-70 lh-solid">hello@</h2>
+  <p class="f6 db b ttu lh-solid">{{ .User.Email }}</p>
+  <h2 class="link b f4 f3-ns dim black-90 lh-solid">welcome to LUWA</h2>
+  <div class="mt5">
+    <a href="/terms/" title="Terms" class="f6 dib ph2 mid-gray dim">Terms of Use</a>
+    <p class="f6 dib pl2 mid-gray dim">{{ .User.CreatedAt }}</p>
+  </div>
+</div>
+{{ else }}
+<h2 class="link b f3 f2-ns dim black-70 lh-solid">hello@ new friend</h2>
+<div class="mt5">
+  <a href="/login/" title="login" class="f6 dib ph2 mid-gray dim">login</a>
+  <a href="/register/" title="register" class="f6 dib pl2 mid-gray dim">sign up</a>
+</div>
+{{ end }}
+
+{{ end}}
+
+{{define "scripts" }} {{ end }}

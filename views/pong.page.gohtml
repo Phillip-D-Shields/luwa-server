@@ -1,0 +1,116 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+<section class="bg-gold sans-serif h-100">
+    <div class="mw9 center pa4 pt2-ns ph7-l fixed">
+        <time id="clock" class="f6 mb2 dib ttu tracked"><small></small></time>
+        <h3 class="f2 f1-m f-headline-l measure-narrow lh-title mv0">
+            <span class="bg-black-90 lh-copy white pa1 tracked-tight">
+                pong
+            </span>
+        </h3>
+    </div>
+    <div class="mw7 center pa4 mt2">
+        <div id="img-container" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <!-- images go here -->
+        </div>
+        <div id="loader" class="text-center mt7">
+            <img src="/static/images/loading-up.svg" alt="loading..." />
+        </div>
+    </div>
+</section>
+{{ end}}
+{{define "scripts" }}
+<script>
+    function updateClock() {
+        let now = new Date();
+        document.getElementById('clock').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    window.onload = updateClock;
+</script>
+
+<script>
+    const imageContainer = document.getElementById("img-container");
+    const loader = document.getElementById("loader");
+
+    let ready = false;
+    let imagesLoaded = 0;
+    let totalImages = 0;
+    let photosArray = [];
+    let count = 10;
+
+    // unsplash api
+    const apiKey = "28n5bIZ0XgzHidxpxIrGUbHjTHlK_N8cmEOvrx8JuU8";
+    const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
+
+    // images loaded
+    function imageLoaded() {
+        imagesLoaded++;
+        if (imagesLoaded === totalImages) {
+            ready = true;
+            loader.hidden = true;
+            count = 15;
+        }
+    }
+
+    // helper functions
+    function setAttributes(element, attributes) {
+        for (const key in attributes) {
+            element.setAttribute(key, attributes[key]);
+        }
+    }
+
+    // display photos
+    function displyPhotos() {
+        imagesLoaded = 0;
+        totalImages = photosArray.length;
+
+        photosArray.forEach((photo) => {
+            // <a item> <img /> </a>
+            const item = document.createElement("a");
+            const img = document.createElement("img");
+
+            setAttributes(item, {
+                href: photo.links.html,
+                target: "_blank",
+            });
+
+            setAttributes(img, {
+                src: photo.urls.regular,
+                alt: photo.alt_description,
+                title: photo.alt_description,
+            });
+            // check when img is loaded
+            img.addEventListener("load", imageLoaded);
+            item.appendChild(img);
+            imageContainer.appendChild(item);
+        });
+    }
+
+    // get photos from unsplash api
+    async function getPhotos() {
+        try {
+            const response = await fetch(apiUrl);
+            photosArray = await response.json();
+            displyPhotos();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // check scroll position
+    window.addEventListener("scroll", () => {
+        if (
+            window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 &&
+            ready
+        ) {
+            ready = false;
+            getPhotos();
+        }
+    });
+
+    // on load
+    getPhotos();
+</script>
+{{ end }}

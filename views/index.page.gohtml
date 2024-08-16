@@ -1,0 +1,102 @@
+{{ template "base" . }}
+
+{{ define "content"}}
+<header class="bg-blue sans-serif">
+    <div class="mw9 center pa4 pt5-ns ph7-l">
+        <time id="greeting" class="f6 mb2 dib ttu tracked"><small>...</small></time>
+        <div class="f2 f1-m f-headline-l measure-narrow lh-title mv0">
+            <span id="advice" class="bg-black-90 lh-copy white pa1 tracked-tight">
+                LOADING .. .
+            </span>
+        </div>
+    </div>
+</header>
+<div class="dt-ns dt--fixed-ns h-100">
+    <div class="dtc-ns tc pv4 bg-black-10">
+        <article class="bg-white center mw5 ba b--black-10 mv4">
+            <div class="pv2 ph3">
+               <h1 class="f6 ttu tracked">To Do</h1>
+            </div>
+            <img src="/static/images/logo.png" class="w-100 db" alt="Closeup photo of a tabby cat yawning.">
+            <div class="pa3">
+              <a href="#" class="link dim lh-title">15 things every cat owner should know</a>
+              <small class="gray db pv2">AMP - <time>6 hours ago</time></small>
+            </div>
+          </article>
+    </div>
+    <div class="dtc-ns tc pv4 bg-black-05">
+        <article class="bg-white center mw5 ba b--black-10 mv4">
+            <div class="pv2 ph3">
+               <h1 class="f6 ttu tracked">Doing</h1>
+            </div>
+            <img src="/static/images/logo.png" class="w-100 db" alt="Closeup photo of a tabby cat yawning.">
+            <div class="pa3">
+              <a href="#" class="link dim lh-title">15 things every cat owner should know</a>
+              <small class="gray db pv2">AMP - <time>6 hours ago</time></small>
+            </div>
+          </article>
+    </div>
+    <div class="dtc-ns tc pv4 bg-black-10">
+        <article class="bg-white center mw5 ba b--black-10 mv4">
+            <div class="pv2 ph3">
+               <h1 class="f6 ttu tracked">done</h1>
+            </div>
+            <img src="/static/images/logo.png" class="w-100 db" alt="Closeup photo of a tabby cat yawning.">
+            <div class="pa3">
+              <a href="#" class="link dim lh-title">15 things every cat owner should know</a>
+              <small class="gray db pv2">AMP - <time>6 hours ago</time></small>
+            </div>
+          </article>
+    </div>
+  </div>
+  
+{{ end }}
+
+{{ define "scripts" }}
+<script>
+
+    const greeting = document.getElementById('greeting');
+    const advice = document.getElementById('advice');
+
+    const greetings = [
+        'kia ora, whanau',
+        'hello, world',
+        'hola, amigos',
+        'bonjour, tout le monde',
+        'ciao, mondo',
+        'hallo, welt',
+        'namaste, duniya',
+        'saluton, mondo',
+        'hej, verden',
+        'hei, verden',
+        'hola, mundo',
+        'hello, world',
+        'kamusta, mundo',
+        'hallo, wereld'
+    ];
+
+    (async () => {
+        // fetch advice slip from simplw advice api
+        await fetch('https://api.adviceslip.com/advice')
+            .then(response => response.json())
+            .then(data => {
+                advice.innerHTML = data.slip.advice;
+            })
+            .then(async () => {
+                greeting.innerHTML = await greetings[Math.floor(Math.random() * greetings.length)];
+                console.log('Advice fetched successfully');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    })();
+
+
+    // update greeting every 5 seconds
+    // setInterval(() => {
+    //     const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+    //     greeting.innerHTML = randomGreeting;
+    // }, 5000);
+
+</script>
+{{ end }}

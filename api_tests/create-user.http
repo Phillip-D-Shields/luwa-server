@@ -1,0 +1,4 @@
+### GET request to create a new user
+GET http://localhost:8080/users/create?email=jase1@email.com&password=password
+
+###

@@ -1,0 +1,30 @@
+{{ define "base" }}
+
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
+<title>{{block "title" .}}luwa{{end}}</title>
+
+<body class="code">
+    <nav class="dt w-100 border-box pa1 ph5-ns fixed">
+        <a class="dtc v-mid mid-gray link dim w-25" href="/" title="Home">
+          <img src="/static/images/logo.png" class="dib w3 h3" alt="Site Name">
+        </a>
+        <div class="dtc v-mid w-75 tr">
+          <a class="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">contact</a>
+        </div>
+      </nav>
+
+    <main class="pt5 vh-100 w-100">
+       
+            {{block "content" .}}{{end}}
+        
+    </main>
+
+    {{ block "scripts" . }}{{end}}
+</body>
+
+</html>
+{{end}}
